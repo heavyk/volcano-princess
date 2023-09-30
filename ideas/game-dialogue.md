@@ -26,3 +26,7 @@ so then, what I do is I can place a marker that is close to one of the dots but 
 
 what ends up happening, within this layout, is to forces me to think about how closely aligned to each of these symbolic answers -- and another thing that I think could be cool would be to paint a color of perceived truthyness -- cause I don't know, may not have been paying attention, or I clicked through the dialoge too fast by accident.
 the other thing I like about it, is let's say one point gives +10 EMO and the other +10 INT -- well, if I pick a point between the two, then I can get +5 of each. this allows my character to be more "well rounded"
+
+### 2023-09-29 11:11 - forward/backward, and complete narrative
+
+as I go through selecting, I want to be able to go back and redo the previous one a different way. then, at the end (also to be able to save it), it'd be cool to see a replay of the whole thing with all of my previous selected dialogues, said and thought.
