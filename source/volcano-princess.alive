@@ -1,0 +1,108 @@
+# volcano-princess
+
+Screen.ratio = Obv(Screen.width, Screen.height, (w, h) => w / h)
+Screen.top_margin = Obv(Screen.height, (height) =>
+	if height > 800 => Math.round height / 40
+	else => 20
+)
+
+Background BLACK ->
+	this.style.background = Color.black
+
+Background SPARKLES ->
+	Particles ...
+
+Background.when LONG_AGO_HOME ->
+	Img "long_ago_bedside", {x0: 20%, x1: 80%, y0: 0%, y1: 60%}
+
+
+struct Narrator [
+	intro: [
+		VisualBlock {
+			text: "a long time ago ..."
+			background: Background.SPARKLES
+		}
+	]
+]
+
+Main.start =[
+	Background FALLING_SPARKLES
+	Scene.goto TITLE
+]
+
+Scene TITLE =[
+	Button "New Game" ->
+		Scene.goto INTRO
+
+	Button "Load" ->
+		Scene.goto LOAD_SCREEN
+
+	Button "Exit" ->
+		Main.exit 0
+]
+
+Scene LOAD_SCREEN =[
+	Panel "Load" {style: Style.border_table} ->
+		save_files = DirList Main.data_dir.saves
+		ObvArray(save_files, (file) =>
+			Row(file.name, File.size, OnOver =[
+				Button Icon.Delete ->
+					file.delete!
+					this.remove!
+
+				Button Icon.Rename ->
+					this.element.replace TextArea(file.name, (text) ->
+						new_path = file.dir ~ text
+						file.rename new_path
+						this.element.replace new_path
+					)
+
+				Button Icon.Inspect ->
+					save = SaveFile file
+					Scene.popup Panel(file.name, ->
+						ObvArray(save.entities (entity) =>
+							Row(entity.name,
+								switch entity.name =>
+									"date" => Date.format entity.value, "YYYY-MM-DD hh:mm"
+									... => null
+							)
+						)
+					)
+			])
+		)
+]
+
+Scene INTRO ->
+	Background BLACK
+	story_panels = Panels(Narrator.intro, (block) =[
+		Background block.background
+		Text block.text
+		if block.skippable is not false ->
+			Button ["Skip", Icon.skip], -> Scene.goto ROSE_BORN
+		After block.duration ->
+			Once block.next (next) -> Scene.goto next
+			After block.impatient, -> Narrator.say "what are you waiting for?"
+	]
+
+Scene ROSE_BORN ->
+	Background LONG_AGO_HOME
+
+
+Scene START ->
+	Background Home.background
+	Narrator "Hi, I'm Lee. you should decide what type of father you're going to be"
+	Panel "What kind of father will you be? =[
+		ObvArray Story.dad_types (type) =>
+			Column type.style, type.title, type.img, OnClick -> Wood.dad_type = type.value
+	]
+	Narrator.say "good, better to decide sooner, rather than later"
+	Narrator.say "you should go see your daughter now"
+	append roses_room =
+		Button "Go to daughter's room", Icon.roses_room, {fade_in: 100ms}, ->
+			 Scene.goto ROSES_ROOM
+
+	After 6000ms ->
+		Narrator.say "your daughter is in her room"
+		Highlight roses_room
+
+Scene ROSES_ROOM ->

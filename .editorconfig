@@ -7,6 +7,7 @@ indent_size = 2
 end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
+
 [*.py]
 indent_size = 4
 max_line_length = 80
@@ -26,3 +27,7 @@ indent_style = tab
 
 [*.md]
 trim_trailing_whitespace = true
+
+[*.alive]
+indent_size = 4
+indent_style = tab
