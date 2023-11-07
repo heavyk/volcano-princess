@@ -1,10 +1,16 @@
 # volcano-princess
 
-Screen.ratio = Obv(Screen.width, Screen.height, (w, h) => w / h)
-Screen.top_margin = Obv(Screen.height, (height) =>
-	if height > 800 => Math.round height / 40
-	else => 20
-)
+Background = O!
+Scene = O!
+Screen = {
+	h: O 800
+	w: O 600
+	ratio: O Screen.w, Screen.h, (w, h) => w / h
+	top_margin: O Screen.h, (h) =>
+		if h > 800 => Math.round h / 40
+		else => 20
+}
+
 
 Background BLACK ->
 	this.style.background = Color.black
@@ -12,7 +18,7 @@ Background BLACK ->
 Background SPARKLES ->
 	Particles ...
 
-Background.when LONG_AGO_HOME ->
+Background LONG_AGO_HOME ->
 	Img "long_ago_bedside", {x0: 20%, x1: 80%, y0: 0%, y1: 60%}
 
 
@@ -26,8 +32,8 @@ struct Narrator [
 ]
 
 Main.start =[
-	Background FALLING_SPARKLES
-	Scene.goto TITLE
+	Background SPARKLES
+	Scene TITLE
 ]
 
 Scene TITLE =[
@@ -45,7 +51,7 @@ Scene LOAD_SCREEN =[
 	Panel "Load" {style: Style.border_table} ->
 		save_files = DirList Main.data_dir.saves
 		ObvArray(save_files, (file) =>
-			Row(file.name, File.size, OnOver =[
+			row = Row(file.name, file.size, OnOver row, =[
 				Button Icon.Delete ->
 					file.delete!
 					this.remove!
