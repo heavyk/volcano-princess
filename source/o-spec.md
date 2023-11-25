@@ -18,3 +18,6 @@ oo = O o1, o2, o3, ((ov1, ov2, ov3) -> new_oo_value), ((oov) !-> ...)
 
 # when value
 o value, -> do_something
+
+# split and transform forward
+o1, o2, o3 = o.split ((vl,v2,v3) -> vl+v2+v3), ((vl,v2,v3) -> vl+v2-v3), ((vl,v2,v3) -> vl-v2-v3)
